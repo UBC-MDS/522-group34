@@ -2,9 +2,9 @@
 title: ""
 ---
 
-# TBD
+# Academic Success Prediction - Team 34
 
-<todo> material is made available under the **Creative Commons Attribution 2.5 Canada License** ([CC BY 2.5 CA](https://creativecommons.org/licenses/by/2.5/ca/)). 
+This material is made available under the **Creative Commons Attribution 2.5 Canada License** ([CC BY 2.5 CA](https://creativecommons.org/licenses/by/2.5/ca/)). 
 
 This is a human-readable summary of (and not a substitute for) the license.
 
@@ -42,7 +42,7 @@ in the introduction-to-data-science repository are made available under the MIT
 license.
 
 **MIT License**
-Copyright (c) 2024 <todo>
+Copyright (c) 2024 Academic Success Prediction - Team 34
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

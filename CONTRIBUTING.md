@@ -144,7 +144,7 @@ Updating, improving and correcting the documentation
 -->
 
 ## Join The Project Team
-<!-- TODO -->
+Make a Pull request to our Github repo with a Readme file about you and your backgorund.
 
 <!-- omit in toc -->
 ## Attribution
