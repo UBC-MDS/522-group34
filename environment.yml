@@ -2,11 +2,9 @@ name: academic-success-predictor
 channels:
   - conda-forge
 dependencies:
-  - conda-lock
   - python=3.11
   - altair=5.4.1
   - jupyterlab=4.2.5
   - pandas=2.2.3
   - scikit-learn=1.5.2
   - pandera=0.20.4
-prefix: /Users/catherinemeng/miniforge3/envs/academic-success-predictor
