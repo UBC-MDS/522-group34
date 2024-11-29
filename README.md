@@ -11,28 +11,35 @@ The data set is created by Mónica Vieira Martins, Jorge Machado, Luís Baptista
 ## Report
 The final report can be found [here](./notebook/academic-success-prediction.ipynb).
 
-## Usage
-- First time running the project, running the following from the root of this repository:
-    ```
-    conda env create --name academic-success-predictor --file environment.yml
-    ```
-- Activate the conda environment:
-    ```
-    conda activate academic-success-predictor
-    ```
-- To run the analysis, run the following from the root of this repository:
-    ```
-    jupyter lab 
-    ```
-- Open notebooks/academic-success-prediction.ipynb in Jupyter Lab and under Switch/Select Kernel choose `Python [conda env:academic-success-predictor]`.
-
-- Next, under the "Kernel" menu click "Restart Kernel and Run All Cells...".
-
 ## Dependencies
-- conda (version 24.9.2)
-- nb_conda_kernels (version 2.5.1)
-- jupyterlab (version 4.2.5)
-- python (version 3.12.5) and packages listed in [environment.yml](./environment.yml)
+- [Docker](https://www.docker.com/products/docker-desktop/)
+
+## Usage
+**Run Jupyter Notebook**
+
+1. Clone this GitHub repository
+
+2. Navigate to the root of the project and run the following command with command line
+
+    `docker compose up`
+
+    This container will run Jupyter Notebook using the default port of 8888. Make sure no other applications are using this port. 
+
+3. In the terminal, copy the Jupyter Notebook URL and token. It should start with 
+
+    `http://127.0.01:8888/lab?token=` 
+
+    ![](img/jupyter-url-terminal.png)
+
+4. In Jupyter Notebook, navigate to the analysis file `academic-success-prediction.ipynb` and under the "Kernel" menu click "Restart Kernel and Run All Cells...".
+
+**Clean Up**
+
+1. Press Ctrl + C in the terminal to shut down the Jupyter Notebook. 
+
+2. Use the following command to remove the container. 
+
+    `docker compose rm`
 
 ## License
 The Academic Success Prediction report contained herein are licensed under the **Creative Commons Attribution 2.5 Canada License** ([CC BY 2.5 CA](https://creativecommons.org/licenses/by/2.5/ca/)). See the [license file](./LICENSE.md) for more information. . If re-using/re-mixing please provide attribution and link to this webpage. The software code contained within this repository is licensed under the MIT license. See the [license file](./LICENSE.md) for more information.

@@ -1,0 +1,12 @@
+services:
+  jupyter-notebook:
+    image:  siddart/mds:a2c0482
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/home/jovyan
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+    platform: linux/amd64
