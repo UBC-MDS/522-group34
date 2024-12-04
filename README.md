@@ -33,6 +33,13 @@ The final report can be found [here](./notebook/academic-success-prediction.ipyn
 
 4. In Jupyter Notebook, navigate to the analysis file `academic-success-prediction.ipynb` and under the "Kernel" menu click "Restart Kernel and Run All Cells...".
 
+**Run Python Script**
+```
+python scripts/download_data.py \
+    --url="https://archive.ics.uci.edu/static/public/697/predict+students+dropout+and+academic+success.zip" \
+    --write_to=data/raw
+```
+
 **Clean Up**
 
 1. Press Ctrl + C in the terminal to shut down the Jupyter Notebook. 
