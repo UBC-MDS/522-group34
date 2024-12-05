@@ -23,7 +23,7 @@ pearson_validation = {
 }
 
 
-# check the file format
+# Check the file format
 def check_csv(file_path):
     """
     Check if the given file is a CSV file by its extension.
@@ -57,21 +57,21 @@ def validate_data(file_path):
     # Import data
     df = pd.read_csv(file_path, delimiter = ';')
 
+    print("Data loaded.")
+
     # Remove extra '\t' from the column name
     df.rename(columns = {"Daytime/evening attendance\t" : "Daytime/evening attendance"}, inplace = True)
 
     # Remove ' from column name to prevent issues with Altair plots
     df.columns = df.columns.str.replace("'s", "", regex=False)
 
-    print("Data loaded.")
-
     df.to_csv("data/processed/clean_data.csv")
 
-    print("Clean data saved to data/processed/clean_data.csv.")
+    print("Clean data saved to data/processed/clean_data.csv")
 
-    print("Starting data validation.")
+    print("Starting data validation")
 
-    # validate data before split
+    # Validate data before split
     schema = pa.DataFrameSchema(
         {
             "Marital status": pa.Column(int, pa.Check.isin([1, 2, 3, 4, 5, 6]), 
@@ -166,21 +166,16 @@ def validate_data(file_path):
     #Check Target/response variable follows expected distribution
     # Calculate observed frequencies in the 'Target' column
     observed_frequencies = df['Target'].value_counts()
-    print("Observed Frequencies:\n", observed_frequencies)
 
     # Calculate total number of students (observations)
     total_students = len(df)
     # Define the expected frequencies for a uniform distribution
     expected_frequencies = [total_students / len(observed_frequencies)] * len(observed_frequencies)
-    print("\nExpected Frequencies (Uniform Distribution):", expected_frequencies)
 
     from scipy.stats import chisquare
 
     # Perform the Chi-Square goodness-of-fit test
     chi2_stat, p_value = chisquare(observed_frequencies, expected_frequencies)
-
-    print(f"\nChi2 Stat: {chi2_stat}")
-    print(f"P-Value: {p_value}")
 
     # Checking for anomalous correlations between target variable and a subset of features variables
     chi2_results = {}
@@ -210,14 +205,12 @@ def validate_data(file_path):
     for pair in pearson_results:
         np.testing.assert_almost_equal(pearson_results[pair], pearson_validation[pair])
 
-    # split train and test data set
+    # Split train and test data set
     train, test = train_test_split(df, train_size = 0.8, random_state = 123)
-
-    print("Target classes \n:", train.nunique())
 
     train.to_csv("data/processed/train_data.csv")
     test.to_csv("data/processed/test_data.csv")
-    print("Train and test data set are saved under /data/processed/.")
+    print("Train and test data set are saved under /data/processed/")
 
 
 @click.command()
@@ -234,7 +227,7 @@ def main(file_path):
 
         print("Data validation success.")
     except Exception as e:
-        print("There is an error happned whiling check the file type or doing the data validation: ", e)
+        print("Error with data validation. Please check source data file.", e)
 
 if __name__ == '__main__':
     main()
