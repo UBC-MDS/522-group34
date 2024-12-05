@@ -215,8 +215,8 @@ def validate_data(file_path):
 
     print("Target classes \n:", train.nunique())
 
-    train.to_csv("data/processed/train.csv")
-    test.to_csv("data/processed/test.csv")
+    train.to_csv("data/processed/train_data.csv")
+    test.to_csv("data/processed/test_data.csv")
     print("Train and test data set are saved under /data/processed/.")
 
 
