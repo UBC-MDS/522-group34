@@ -58,10 +58,9 @@ python scripts/03_eda.py --data_path="data/processed/train_data.csv" --figure_pa
 The Academic Success Prediction report contained herein are licensed under the **Creative Commons Attribution 2.5 Canada License** ([CC BY 2.5 CA](https://creativecommons.org/licenses/by/2.5/ca/)). See the [license file](./LICENSE.md) for more information. . If re-using/re-mixing please provide attribution and link to this webpage. The software code contained within this repository is licensed under the MIT license. See the [license file](./LICENSE.md) for more information.
 
 ## Reference
-1. Martins, M. V., D. Tolledo, J. Machado, L. M. T. Baptista, and V. Realinho. “Early Prediction of Student’s Performance in Higher Education: A Case Study.” In Trends and Applications in Information Systems and Technologies, vol. 1, Advances in Intelligent Systems and Computing series. Springer, 2021. https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success. DOI: 10.1007/978-3-030-72657-7_16.
-
-2. Scikit-learn Developers. “Scikit-learn: Machine Learning in Python – API Reference Documentation.” Accessed November 20, 2024. https://scikit-learn.org/dev/api/index.html.
-
-3. Vega-Altair Developers. “Altair User Guide.” Accessed November 20, 2024. https://altair-viz.github.io/user_guide/data.html#.
-
-4. Timbers, T., J. Ostblom, and M. Lee. “Predicting Breast Cancer from Digitized Images of Breast Mass.” Accessed November 21, 2024. https://github.com/ttimbers/breast-cancer-predictor/blob/0.0.1/notebooks/breast_cancer_predictor_report.ipynb.
+Bantilan, Niels. 2020. “Pandera: Statistical Data Validation of Pandas Dataframes.” In SciPy, 116–24.  
+Kramer, Oliver, and Oliver Kramer. 2016. “Scikit-Learn.” Machine Learning for Evolution Strategies, 45–53.  
+McKinney, Wes et al. 2011. “Pandas: A Foundational Python Library for Data Analysis and Statistics.” Python for High Performance and Scientific Computing 14 (9): 1–9.  
+Python, Why. 2021. “Python.” Python Releases for Windows 24.  
+Realinho, Valentim, Jorge Machado, Luı́s Baptista, and Mónica V Martins. 2022. “Predicting Student Dropout and Academic Success.” Data 7 (11): 146.  
+VanderPlas, Jacob, Brian Granger, Jeffrey Heer, Dominik Moritz, Kanit Wongsuphasawat, Arvind Satyanarayan, Eitan Lees, Ilia Timofeev, Ben Welsh, and Scott Sievert. 2018. “Altair: Interactive Statistical Visualizations for Python.” Journal of Open Source Software 3 (32): 1057.

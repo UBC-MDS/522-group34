@@ -1,15 +1,17 @@
 ---
 title: Predicting academic success of undergraduate students
-html:
-    embed-resources: true
+embed-resources: true
 execute:
     echo: false
 jupyter: python3
+
+bibliography: references.bib
 ---
 
 by Catherine Meng, Jenson Chang, Jingyuan Wang, Siddarth Subrahmanian 2024/11/23
 
 ```{python}
+#| eval: false
 import pandas as pd
 import altair as alt
 import numpy as np
@@ -40,12 +42,11 @@ The goal of this analysis is to help reduce academic dropout and failure in high
 ## Methods
 
 ## Data
-
-The data set is created by Mónica Vieira Martins, Jorge Machado, Luís Baptista and Valentim Realinho at the Instituto Politécnico de Portalegre (M.V.Martins, D. Tolledo, J. Machado, L. M.T. Baptista, V.Realinho. 2021). It is sourced from UC Irvine's Machine Learning Repository and can be found [here](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success). The data contains demographic, enrollment and academic (1st and 2nd semesters) information on the students. Each row in the data set represents a student record. Using these data, a model would be built to predict the academic outcome of the student. There are 36 columns in total.
+The data set is created by Mónica Vieira Martins, Jorge Machado, Luís Baptista and Valentim Realinho at the Instituto Politécnico de Portalegre (M.V.Martins, D. Tolledo, J. Machado, L. M.T. Baptista, V.Realinho. @realinho2022predicting). It is sourced from UC Irvine's Machine Learning Repository and can be found [here](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success). The data contains demographic, enrollment and academic (1st and 2nd semesters) information on the students. Each row in the data set represents a student record. Using these data, a model would be built to predict the academic outcome of the student. There are 36 columns in total.
 
 ## Analysis
 
-The k-nearest neighbors (k-nn) algorithm was used to build a classification model to predict whether a student is at risk of dropping out. All variables included in the original data set, with the exception of the Course, Nacionality, Gender, Unemployment rate, Inflation rate, GDP, Previous qualification, Mother qualification Mother occupation, Father qualification, Father occupation columns were used to fit the model. Data was split with 80% being partitioned into the training set and 20% being partitioned into the test set. The hyperparameter K was chosen using 5-fold cross validation. All numeric features were standardized just prior to model fitting. We leave the categorical features as they are because they all have integer data type.
+The Python programming language @python2021python and the following Python packages were used to perform the analysis: Pandas (@mckinney2011pandas), Scikit-learn (@kramer2016scikit), Pandera (@bantilan2020pandera) and Altair (@vanderplas2018altair). The k-nearest neighbors (k-nn) algorithm was used to build a classification model to predict whether a student is at risk of dropping out. All variables included in the original data set, with the exception of the Course, Nacionality, Gender, Unemployment rate, Inflation rate, GDP, Previous qualification, Mother qualification Mother occupation, Father qualification, Father occupation columns were used to fit the model. Data was split with 80% being partitioned into the training set and 20% being partitioned into the test set. The hyperparameter K was chosen using 5-fold cross validation. All numeric features were standardized just prior to model fitting. We leave the categorical features as they are because they all have integer data type.
 
 ## Results & Discussion
 
@@ -124,12 +125,7 @@ test_score = my_pipeline_best.score(X_test, y_test)
 print(f"Test accuracy: {test_score}")
 ```
 
+{{< pagebreak >}}
+
 ## References
 
-1.  Martins, M. V., D. Tolledo, J. Machado, L. M. T. Baptista, and V. Realinho. “Early Prediction of Student’s Performance in Higher Education: A Case Study.” In Trends and Applications in Information Systems and Technologies, vol. 1, Advances in Intelligent Systems and Computing series. Springer, 2021. https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success. DOI: 10.1007/978-3-030-72657-7_16.
-
-2.  Scikit-learn Developers. “Scikit-learn: Machine Learning in Python – API Reference Documentation.” Accessed November 20, 2024. https://scikit-learn.org/dev/api/index.html.
-
-3.  Vega-Altair Developers. “Altair User Guide.” Accessed November 20, 2024. https://altair-viz.github.io/user_guide/data.html#.
-
-4.  Timbers, T., J. Ostblom, and M. Lee. “Predicting Breast Cancer from Digitized Images of Breast Mass.” Accessed November 21, 2024. https://github.com/ttimbers/breast-cancer-predictor/blob/0.0.1/notebooks/breast_cancer_predictor_report.ipynb.
