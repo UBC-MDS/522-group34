@@ -2,9 +2,30 @@
 title: Predicting academic success of undergraduate students
 html:
     embed-resources: true
+execute:
+    echo: false
+jupyter: python3
 ---
 
 by Catherine Meng, Jenson Chang, Jingyuan Wang, Siddarth Subrahmanian 2024/11/23
+
+```{python}
+import pandas as pd
+import altair as alt
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import make_column_transformer
+from sklearn.pipeline import make_pipeline
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import RandomizedSearchCV
+from scipy.stats import randint, chi2_contingency, pearsonr
+from sklearn import set_config
+from itertools import combinations
+set_config(display='text')
+import pandera as pa
+import os
+```
 
 ## Summary
 
@@ -32,13 +53,76 @@ To look at whether each of the predictors might be useful to predict the academi
 
 ![Distribution of Numerical Variable per Academic Outcome](../figures/eda_numerical.png){#fig-eda_numerical}
 
-In @fig-eda_numerical, although `Unemployment rate`, `Inflation rate` and `GDP` are continous values, they each have less than 10 unique values out of 3000+ rows. This doesn't provide enough range to generalize the problem. 
+In @fig-eda_numerical, although `Unemployment rate`, `Inflation rate` and `GDP` are continous values, they each have less than 10 unique values out of 3000+ rows. This doesn't provide enough range to generalize the problem.
 
-![Distribution of Categorical Variable per Academic Outcome](../figures/eda_categorical.png){#fig-eda_categorical} 
+![Distribution of Categorical Variable per Academic Outcome](../figures/eda_categorical.png){#fig-eda_categorical}
 
-In @fig-eda_categorical, `Previous qualification`, `Mother qualification`, `Mother occupation`, `Father qualification` and `Father occupation` have cluster patterns but it's unclear what the pattern represents since the ranking of education levels are arbitrary. E.g. "5 - Higher Education - Doctorate" is ranked higher than "1 - Secondary Education" but lower than "10 - 11th Year of Schooling - Not Completed". The source data [website](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success) provides description on each ranking. `Course` only captures 17 different courses and does not generalize the real world well. `Nactionality` and `Gender` are removed to avoid racial and gender bias 
+In @fig-eda_categorical, `Previous qualification`, `Mother qualification`, `Mother occupation`, `Father qualification` and `Father occupation` have cluster patterns but it's unclear what the pattern represents since the ranking of education levels are arbitrary. E.g. "5 - Higher Education - Doctorate" is ranked higher than "1 - Secondary Education" but lower than "10 - 11th Year of Schooling - Not Completed". The source data [website](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success) provides description on each ranking. `Course` only captures 17 different courses and does not generalize the real world well. `Nactionality` and `Gender` are removed to avoid racial and gender bias
+
+```{python}
+#| eval: false
+X_train = train.drop(columns=['Target'])
+y_train = train['Target']
+X_test = test.drop(columns=['Target'])
+y_test = test['Target']
+
+# Make preprocessor
+preprocessor = make_column_transformer(
+    (StandardScaler(), numeric_features),
+    ('drop', drop_features)
+)
+```
+
+```{python}
+#| eval: false
+# Build the pipeline, use knn to train the model
+
+my_pipeline = make_pipeline(
+    preprocessor, 
+    KNeighborsClassifier(n_neighbors=5) 
+)
+
+my_pipeline.fit(X_train, y_train)
+```
+
+```{python}
+#| eval: false
+# Use RandomizedSearchCV to tune hyperparameters
+
+param_distributions = {
+    'kneighborsclassifier__n_neighbors': randint(1, 30)
+}
+
+random_search = RandomizedSearchCV(
+    estimator=my_pipeline,
+    param_distributions=param_distributions,
+    n_iter=50,  
+    cv=5,  
+    scoring='accuracy',  
+    random_state=42,  
+    n_jobs=-1 
+)
+
+random_search.fit(X_train, y_train)
+
+print("Best Parameters:", random_search.best_params_)
+print("Best CV Accuracy:", random_search.best_score_)
+```
 
 We utilized the KNN to train the dataset and employed RandomizedSearchCV to fine-tune the hyperparameters. Based on the results, the optimal hyperparameter value is k=12, achieving a best cross-validation score of 0.71. Using this value, we retrained the model and evaluated its performance on the test set, obtaining a final test score of 0.71.
+
+```{python}
+#| eval: false
+my_pipeline_best = make_pipeline(
+    preprocessor, 
+    KNeighborsClassifier(n_neighbors=12) 
+)
+
+my_pipeline_best.fit(X_train, y_train)
+
+test_score = my_pipeline_best.score(X_test, y_test)
+print(f"Test accuracy: {test_score}")
+```
 
 ## References
 
