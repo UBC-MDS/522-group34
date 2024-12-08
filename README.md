@@ -4,7 +4,7 @@
 Demo of a data analysis project for DSCI 522 (Data Science Workflows); a course in the Master of Data Science program at the University of British Columbia.
 
 ## About
-Here we attempt to build a classification model using the k-nearest neighbours algorithm which can use the information known at the time of student enrollment (academic path, demographics, and social-economic factors) to predict students' dropout and academic sucess. Our final classifier performed consistently on unseen test data, achieving a cross-validation training score of 0.71, with a similar test score. Although the model's accuracy is moderate, it performs consistently. Given that the data was collected from a single institution, a larger dataset may be necessary to generalize predictions to other institutions or countries. We believe this model is close to supporting dropout prediction for the institution from which the data was collected, though further research to improve performance and better understand characteristics of incorrectly predicted students would still be beneficial.
+Here we attempt to build a classification model using the k-Nearest Neighbors algorithm to predict student dropout and academic success based on information available at enrollment (including academic path, demographics, and socio-economic factors). Our final classifier performed consistently on unseen test data, achieving a cross-validation training score of 0.72, with a similar test score. Although the model’s accuracy is moderate, it performs consistently. Given that the data was collected from a single institution, a larger dataset may be necessary to generalize predictions to other institutions or countries. We believe this model can be a starting point for institution to identify and support students at risk of dropout. However, the model can be developed further by combining academic data with social/economic data to improve the prediction and provide stakeholders with a more comprehensive view on the potential causes of student dropouts. We recommend this improvement because it would enable instutitions to focus their leverage their limited resources for maximum student support.
 
 The data set is created by Mónica Vieira Martins, Jorge Machado, Luís Baptista and Valentim Realinho at the Instituto Politécnico de Portalegre (M.V.Martins, D. Tolledo, J. Machado, L. M.T. Baptista, V.Realinho. 2021). It is sourced from UC Irvine's Machine Learning Repository and can be found here. The data contains demographic, enrollment and academic (1st and 2nd semesters) information on the students. Each row in the data set represents a student record. Using these data, a model would be built to predict the academic outcome of the student. There are 36 columns in total.
 
@@ -31,7 +31,7 @@ The final report can be found [here](./notebook/academic-success-prediction.ipyn
 
     ![](img/jupyter-url-terminal.png)
 
-4. In Jupyter Notebook, navigate to the analysis file `academic-success-prediction.ipynb` and under the "Kernel" menu click "Restart Kernel and Run All Cells...".
+4. Open the Terminal in Jupyter Notebook and run the Python Scripts below.
 
 **Run Python Script**
 ```
@@ -44,10 +44,13 @@ python scripts/01_download_data.py \
 python scripts/02_data_cleaning_validation.py --file_path=data/raw/data.csv
 
 # Perform exploratory data analysis and save figures
-python scripts/03_eda.py --data_path="data/processed/train_data.csv" --figure_path="figures"
+python scripts/03_eda.py --data_path="data/processed/train_data.csv" --figure_path="results/figures"
 
 # Run the knn model and export the best one
-python scripts/04_model_classifier.py --data_path_train="data/processed/train_data.csv" --data_path_test="data/processed/test_data.csv" --pipeline_to="models"
+python scripts/04_model_classifier.py --data_path_train="data/processed/train_data.csv" --data_path_test="data/processed/test_data.csv" --pipeline_to="results/models"
+
+quarto render report/academic-success-prediction.qmd --to html
+quarto render report/academic-success-prediction.qmd --to pdf
 ```
 **Clean Up**
 
@@ -56,6 +59,24 @@ python scripts/04_model_classifier.py --data_path_train="data/processed/train_da
 2. Use the following command to remove the container. 
 
     `docker compose rm`
+
+## Adding a new dependency
+
+1. Add the dependency to the `environment.yml` file on a new branch.
+
+2. Run `conda-lock -k explicit --file environment.yml -p linux-64` to update the `conda-linux-64.lock` file.
+
+2. Re-build the Docker image locally to ensure it builds and runs properly.
+
+3. Push the changes to GitHub. A new Docker
+   image will be built and pushed to Docker Hub automatically.
+   It will be tagged with the SHA for the commit that changed the file.
+
+4. Update the `docker-compose.yml` file on your branch to use the new
+   container image (make sure to update the tag specifically).
+
+5. Send a pull request to merge the changes into the `main` branch. 
+
 
 ## License
 The Academic Success Prediction report contained herein are licensed under the **Creative Commons Attribution 2.5 Canada License** ([CC BY 2.5 CA](https://creativecommons.org/licenses/by/2.5/ca/)). See the [license file](./LICENSE.md) for more information. . If re-using/re-mixing please provide attribution and link to this webpage. The software code contained within this repository is licensed under the MIT license. See the [license file](./LICENSE.md) for more information.

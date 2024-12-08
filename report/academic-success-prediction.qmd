@@ -1,298 +1,88 @@
 ---
-title: Predicting academic success of undergraduate students
+title: "Predicting academic success of undergraduate students"
+author: "Catherine Meng, Jenson Chang, Jingyuan Wang and Siddarth Subrahmanian"
+date: "2024/12/06"
 embed-resources: true
 execute:
-  echo: false
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .qmd
-      format_name: quarto
-      format_version: '1.0'
-      jupytext_version: 1.16.4
-  kernelspec:
-    display_name: 'Python [conda env:academic-success-predictor]'
-    language: python
-    name: conda-env-academic-success-predictor-py
+    echo: false
+format:
+    html:
+        toc: true
+    pdf:
+        toc: true
 bibliography: references.bib
 ---
 
 ```{python}
-#| eval: false
-import pandas as pd
-import altair as alt
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.compose import make_column_transformer
-from sklearn.pipeline import make_pipeline
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import RandomizedSearchCV
-from scipy.stats import randint, chi2_contingency, pearsonr
-from sklearn import set_config
-from itertools import combinations
-set_config(display='text')
-import pandera as pa
+import pickle
 import os
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix, classification_report
+
+train_df = pd.read_csv('./../data/processed/train_data.csv')
+test_df = pd.read_csv('./../data/processed/test_data.csv')
+
+X_train = train_df.drop(columns=['Target'])
+y_train = train_df['Target']
+X_test = test_df.drop(columns=['Target'])
+y_test = test_df['Target']
+
+model_path = './../results/models/best_knn_pipeline.pickle'
+with open(model_path, 'rb') as f:
+    best_model = pickle.load(f)
+
+k = best_model.named_steps['kneighborsclassifier'].n_neighbors
+test_score = round(best_model.score(X_test, y_test),2)
 ```
 
-## Summary
+# Summary
 
-In this analysis, we attempt to build a classification model using the k-nearest neighbors algorithm to predict student dropout and academic success based on information available at enrollment (including academic path, demographics, and socio-economic factors). Our final classifier performed consistently on unseen test data, achieving a cross-validation training score of 0.71, with a similar test score. Although the model's accuracy is moderate, it performs consistently. Given that the data was collected from a single institution, a larger dataset may be necessary to generalize predictions to other institutions or countries. We believe this model is close to supporting dropout prediction for the institution from which the data was collected, though further research to improve performance and better understand characteristics of incorrectly predicted students would still be beneficial.
+In this analysis, we attempt to build a classification model using the k-Nearest Neighbors algorithm to predict student dropout and academic success based on information available at enrollment (including academic path, demographics, and socio-economic factors). Our final classifier performed consistently on unseen test data, achieving a cross-validation training score of `{python} test_score`, with a similar test score. Although the model's accuracy is moderate, it performs consistently. Given that the data was collected from a single institution, a larger dataset may be necessary to generalize predictions to other institutions or countries. We believe this model can be a starting point for institution to identify and support students at risk of dropout. However, the model can be developed further by combining academic data with social/economic data to improve the prediction and provide stakeholders with a more comprehensive view on the potential causes of student dropouts. We recommend this improvement because it would enable instutitions to focus their leverage their limited resources for maximum student support. 
 
-## Introduction
+# Introduction
 
 Higher education institutions worldwide face the ongoing challenge of academic dropout and student failure, which affect not only individual students’ futures but also the institution’s reputation and resources. The ability to predict and anticipate students' potential difficulties is valuable not only for supporting individual students in achieving their goals but also for institutions aiming to implement strategies that support and guide students who may be at risk of academic failure or dropout.
 
 The goal of this analysis is to help reduce academic dropout and failure in higher education by applying machine learning techniques to identify at-risk students early in their academic journey, enabling institutions to implement targeted support strategies.
 
-## Methods
+# Methods
 
 ## Data
-The data set is created by Mónica Vieira Martins, Jorge Machado, Luís Baptista and Valentim Realinho at the Instituto Politécnico de Portalegre (M.V.Martins, D. Tolledo, J. Machado, L. M.T. Baptista, V.Realinho. @realinho2022predicting). It is sourced from UC Irvine's Machine Learning Repository and can be found [here](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success). The data contains demographic, enrollment and academic (1st and 2nd semesters) information on the students. Each row in the data set represents a student record. Using these data, a model would be built to predict the academic outcome of the student. There are 36 columns in total.
+The data set is created by Mónica Vieira Martins, Jorge Machado, Luís Baptista and Valentim Realinho at the Instituto Politécnico de Portalegre @realinho2022predicting. It is sourced from UC Irvine's Machine Learning Repository and can be found [here](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success). The data contains demographic, enrollment and academic (1st and 2nd semesters) information on the students. Each row in the data set represents a student record. Using these data, a model would be built to predict the academic outcome of the student. There are 36 columns in total.
 
 ## Analysis
 
-The Python programming language @python2021python and the following Python packages were used to perform the analysis: Pandas (@mckinney2011pandas), Scikit-learn (@kramer2016scikit), Pandera (@bantilan2020pandera) and Altair (@vanderplas2018altair). The k-nearest neighbors (k-nn) algorithm was used to build a classification model to predict whether a student is at risk of dropping out. All variables included in the original data set, with the exception of the Course, Nacionality, Gender, Unemployment rate, Inflation rate, GDP, Previous qualification, Mother qualification Mother occupation, Father qualification, Father occupation columns were used to fit the model. Data was split with 80% being partitioned into the training set and 20% being partitioned into the test set. The hyperparameter K was chosen using 5-fold cross validation. All numeric features were standardized just prior to model fitting. We leave the categorical features as they are because they all have integer data type.
+The Python programming language @python2021python and the following Python packages were used to perform the analysis: Pandas @mckinney2011pandas, Scikit-learn @kramer2016scikit, Pandera @bantilan2020pandera and Altair @vanderplas2018altair. The k-Nearest Neighbors (k-NN) algorithm was used to build a classification model to predict whether a student is at risk of dropping out. All variables included in the original data set, with the exception of the Course, Nacionality, Gender, Unemployment rate, Inflation rate, GDP, Previous qualification, Mother qualification Mother occupation, Father qualification, Father occupation columns were used to fit the model. Data was split with 80% being partitioned into the training set and 20% being partitioned into the test set. The hyperparameter K was chosen using 5-fold cross validation. All numeric features were standardized just prior to model fitting. We leave the categorical features as they are because they all have integer data type.
 
-## Results & Discussion
+# Results & Discussion
 
 To look at whether each of the predictors might be useful to predict the academic outcome, we plotted the distributions of each predictor from the training data set and coloured the distribution by class (Dropout: blue, Enrolled: orange, and Graduate: red).
 
-![Distribution of Numerical Variable per Academic Outcome](../figures/eda_numerical.png){#fig-eda_numerical}
+![Distribution of Numerical Variable per Academic Outcome](../results/figures/eda_numerical.png){#fig-eda_numerical}
 
 In @fig-eda_numerical, although `Unemployment rate`, `Inflation rate` and `GDP` are continous values, they each have less than 10 unique values out of 3000+ rows. This doesn't provide enough range to generalize the problem.
 
-![Distribution of Categorical Variable per Academic Outcome](../figures/eda_categorical.png){#fig-eda_categorical}
+![Distribution of Categorical Variable per Academic Outcome](../results/figures/eda_categorical.png){#fig-eda_categorical}
 
 In @fig-eda_categorical, `Previous qualification`, `Mother qualification`, `Mother occupation`, `Father qualification` and `Father occupation` have cluster patterns but it's unclear what the pattern represents since the ranking of education levels are arbitrary. E.g. "5 - Higher Education - Doctorate" is ranked higher than "1 - Secondary Education" but lower than "10 - 11th Year of Schooling - Not Completed". The source data [website](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success) provides description on each ranking. `Course` only captures 17 different courses and does not generalize the real world well. `Nactionality` and `Gender` are removed to avoid racial and gender bias
 
-```{python}
-#| eval: false
-# Import data
-df = pd.read_csv('../data/raw/data.csv', delimiter = ';')
+We utilized the k-NN to train the dataset and employed RandomizedSearchCV to fine-tune the hyperparameters. Based on the results, the optimal hyperparameter value is k=`{python} k`, achieving a best cross-validation score of `{python} test_score`. Using this value, we retrained the model and evaluated its performance on the test set, obtaining a final test score of `{python} test_score`.
 
-# Remove extra '\t' from the column name
-df.rename(columns = {"Daytime/evening attendance\t" : "Daytime/evening attendance"}, inplace = True)\
-
-# Remove ' from column name to prevent issues with Altair plots
-df.columns = df.columns.str.replace("'s", "", regex=False)
-
-train, test = train_test_split(df, train_size = 0.8, random_state = 123)
-
-# validate data before split
-schema = pa.DataFrameSchema(
-    {
-        "Marital status": pa.Column(int, pa.Check.isin([1, 2, 3, 4, 5, 6]), 
-                                    nullable=True),
-        "Application mode": pa.Column(int, pa.Check.isin(
-            [1, 2, 5, 7, 10, 15, 16, 17, 18, 26, 
-             27, 39, 42, 43, 44, 51, 53, 57])),
-        "Application order": pa.Column(int, pa.Check.isin(
-            [0, 1, 2, 3, 4, 5, 6, 9])),
-        "Course": pa.Column(int, pa.Check.isin(
-            [33, 171, 8014, 9003, 9070, 9085, 9119, 9130, 9147, 9238, 
-             9254, 9500, 9556, 9670, 9773, 9853, 9991]), nullable=True), 
-        "Daytime/evening attendance": pa.Column(int, pa.Check.isin(
-            [0, 1]), nullable=True),
-        "Previous qualification": pa.Column(int, pa.Check.isin(
-            [1, 2, 3, 4, 5, 6, 9, 10, 12, 14, 15, 19, 38, 39, 40, 42, 43])),
-        "Previous qualification (grade)": pa.Column(float, pa.Check.between(
-            0, 200)),
-        "Nacionality": pa.Column(int, pa.Check.isin(
-            [1, 2, 6, 11, 13, 14, 17, 21, 22, 24, 25, 26, 32, 41, 62, 
-             100, 101, 103, 105, 108, 109]), nullable=True),
-        "Mother qualification": pa.Column(int, pa.Check.isin(
-            [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 14, 18, 19, 22, 26, 27, 29, 30, 
-             34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44]), nullable=True),
-        "Father qualification": pa.Column(int, pa.Check.isin(
-            [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 18, 19, 20, 22, 25, 
-             26, 27,29, 30, 31, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 
-             43, 44]), nullable=True),
-        "Mother occupation": pa.Column(int, pa.Check.isin(
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 90, 99, 122, 123, 125, 131,
-             132, 134, 141, 143, 144, 151, 152, 153, 171, 173, 175, 191, 
-             192, 193, 194]), nullable=True),
-        "Father occupation": pa.Column(int, pa.Check.isin(
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 90, 99, 101, 102, 103, 
-             112, 114, 121, 122, 123, 124, 131, 132, 134, 135, 141, 143, 
-             144, 151, 152, 153, 154, 161, 163, 171, 172, 174, 175, 
-             181, 182, 183, 192, 193, 194, 195]), nullable=True),
-        "Admission grade": pa.Column(float, pa.Check.between(0, 200), 
-                                     nullable=True),
-        "Displaced": pa.Column(int, pa.Check.isin([0, 1]), nullable=True), 
-        "Educational special needs": pa.Column(int, pa.Check.isin([0, 1]), 
-                                               nullable=True),
-        "Debtor": pa.Column(int, pa.Check.isin([0, 1]), nullable=True),
-        "Tuition fees up to date": pa.Column(int, pa.Check.isin([0, 1]), 
-                                             nullable=True),
-        "Gender": pa.Column(int, pa.Check.isin([0, 1]), nullable=True),
-        "Scholarship holder": pa.Column(int, pa.Check.isin([0, 1]), 
-                                        nullable=True),
-        "Age at enrollment": pa.Column(int, pa.Check.between(15, 100), 
-                                       nullable=True),
-        "International": pa.Column(int, pa.Check.isin([0, 1]), 
-                                   nullable=True),
-        "Curricular units 1st sem (credited)": pa.Column(int, 
-                                                         nullable=True),
-        "Curricular units 1st sem (enrolled)": pa.Column(int, 
-                                                         nullable=True),
-        "Curricular units 1st sem (evaluations)": pa.Column(int, 
-                                                            nullable=True), 
-        "Curricular units 1st sem (approved)": pa.Column(int, 
-                                                         nullable=True),
-        "Curricular units 1st sem (grade)": pa.Column(
-            float, pa.Check.between(0, 20), nullable=True),
-        "Curricular units 1st sem (without evaluations)": pa.Column(
-            int, nullable=True),
-        "Curricular units 2nd sem (credited)": pa.Column(
-            int, nullable=True),
-        "Curricular units 2nd sem (enrolled)": pa.Column(
-            int, nullable=True),
-        "Curricular units 2nd sem (evaluations)": pa.Column(
-            int, nullable=True),
-        "Curricular units 2nd sem (approved)": pa.Column(int, nullable=True),
-        "Curricular units 2nd sem (grade)": pa.Column(
-            float, pa.Check.between(0, 20), nullable=True),
-        "Curricular units 2nd sem (without evaluations)": pa.Column(
-            int, nullable=True),
-        "Unemployment rate": pa.Column(float, nullable=True),
-        "Inflation rate": pa.Column(float, nullable=True),
-        "GDP": pa.Column(float, nullable=True),
-        "Target": pa.Column(str, pa.Check.isin(
-            ['Dropout', 'Enrolled', 'Graduate']))
-    },
-    checks=[
-        pa.Check(lambda df: ~df.duplicated().any(), 
-                 error="Duplicate rows found."),
-        pa.Check(lambda df: ~(df.isna().all(axis=1)).any(), 
-                 error="Empty rows found.")
-    ]
-)
-
-schema.validate(df, lazy=True)
-
-# Group feature types based on feature description from source data
-categorical_features = ["Application order", "Course", "Nacionality", "Gender",
-                        "Marital status", "Application mode", "Daytime/evening attendance",
-                        "Previous qualification", "Mother qualification",  "Mother occupation", 
-                        "Father qualification", "Father occupation", "Displaced", 
-                        "Educational special needs", "Debtor", "Tuition fees up to date",
-                        "Scholarship holder", "International"]
-
-numeric_features = ["Previous qualification (grade)", "Admission grade", "Age at enrollment",
-                      "Curricular units 1st sem (credited)", "Curricular units 1st sem (enrolled)",
-                      "Curricular units 1st sem (evaluations)", "Curricular units 1st sem (approved)",
-                      "Curricular units 1st sem (grade)", "Curricular units 1st sem (without evaluations)",
-                      "Curricular units 2nd sem (credited)", "Curricular units 2nd sem (enrolled)",
-                      "Curricular units 2nd sem (evaluations)", "Curricular units 2nd sem (approved)",
-                      "Curricular units 2nd sem (grade)", "Curricular units 2nd sem (without evaluations)",
-                      "Unemployment rate", "Inflation rate", "GDP"]
-# Features to drop from model
-drop_features = ["Course", "Nacionality", "Gender", "Unemployment rate",
-                 "Inflation rate", "GDP", "Previous qualification", "Mother qualification", 
-                 "Mother occupation", "Father qualification", "Father occupation"]
-```
+From @tbl-confusion_matrix, we are only able to predict 68% of the student droputs. Although this will already enable institutions a good baseline to direct their resouces at supporting some of the students, the model could be improved further. In our model, `Unemployment rate`, `Inflation rate` and `GDP` are not used due to the data being skewed. Therefore the model is not using social/economic data data to help predict the outcome of the students. The state of the economy and job market may influence a student's perception of their future post-graduation and and has an impact on the student's academic outcome. Additional social/economic data could be combined with the existing data set to further improve the accuracy of the model. This would also help provide a more comprehensive explanation to instituations on the cause of student dropouts and allow them to target specific issues to address. 
 
 ```{python}
-#| eval: false
-X_train = train.drop(columns=['Target'])
-y_train = train['Target']
-X_test = test.drop(columns=['Target'])
-y_test = test['Target']
-
-# Make preprocessor
-preprocessor = make_column_transformer(
-    (StandardScaler(), numeric_features),
-    ('drop', drop_features)
-)
-```
-
-```{python}
-#| eval: false
-# Build the pipeline, use knn to train the model
-
-my_pipeline = make_pipeline(
-    preprocessor, 
-    KNeighborsClassifier(n_neighbors=5) 
-)
-
-my_pipeline.fit(X_train, y_train)
-```
-
-```{python}
-#| eval: false
-# Use RandomizedSearchCV to tune hyperparameters
-
-param_distributions = {
-    'kneighborsclassifier__n_neighbors': randint(1, 30)
-}
-
-random_search = RandomizedSearchCV(
-    estimator=my_pipeline,
-    param_distributions=param_distributions,
-    n_iter=50,  
-    cv=5,  
-    scoring='accuracy',  
-    random_state=42,  
-    n_jobs=-1 
-)
-
-random_search.fit(X_train, y_train)
-
-print("Best Parameters:", random_search.best_params_)
-print("Best CV Accuracy:", random_search.best_score_)
-```
-
-We utilized the KNN to train the dataset and employed RandomizedSearchCV to fine-tune the hyperparameters. Based on the results, the optimal hyperparameter value is k=12, achieving a best cross-validation score of 0.71. Using this value, we retrained the model and evaluated its performance on the test set, obtaining a final test score of 0.71.
-
-```{python}
-#| eval: false
-my_pipeline_best = make_pipeline(
-    preprocessor, 
-    KNeighborsClassifier(n_neighbors=12) 
-)
-
-my_pipeline_best.fit(X_train, y_train)
-
-test_score = my_pipeline_best.score(X_test, y_test)
-print(f"Test accuracy: {test_score}")
-```
-
-```{python}
-#code for confusion matrix
-
-import pickle
-import os
-import numpy as np
-from sklearn.metrics import confusion_matrix, classification_report
-import matplotlib.pyplot as plt
-import seaborn as sns  # Optional, for better visualizations
-
-# Step 1: Load the saved model
-model_path = './../models/best_knn_pipeline.pickle'
-with open(model_path, 'rb') as f:
-    best_model = pickle.load(f)
-
-# Step 2: We already have the test data (X_test and y_test)
-
-
-# Step 3: Make predictions using the loaded model
+#| label: tbl-confusion_matrix
+#| tbl-cap: Confusion matrix comparing predicted outcomes vs. true outcomes
 y_pred = best_model.predict(X_test)
-
-# Step 4: Compute the confusion matrix
 cm = confusion_matrix(y_test, y_pred)
 
-# Step 5: Optionally, print the classification report (detailed metrics)
-print("Classification Report:")
-print(classification_report(y_test, y_pred))
-
-# Step 6: Visualize the confusion matrix (optional but useful)
 plt.figure(figsize=(6, 5))
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
 plt.xlabel('Predicted')
 plt.ylabel('True')
-plt.title('Confusion Matrix')
 plt.show()
 ```
 
