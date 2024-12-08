@@ -48,6 +48,9 @@ python scripts/03_eda.py --data_path="data/processed/train_data.csv" --figure_pa
 
 # Run the knn model and export the best one
 python scripts/04_model_classifier.py --data_path_train="data/processed/train_data.csv" --data_path_test="data/processed/test_data.csv" --pipeline_to="results/models"
+
+quarto render report/academic-success-prediction.qmd --to html
+quarto render report/bacademic-success-prediction.qmd --to pdf
 ```
 **Clean Up**
 
