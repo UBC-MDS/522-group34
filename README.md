@@ -41,7 +41,7 @@ python scripts/01_download_data.py \
     --write_to=data/raw
 
 # Check file type, do data cleaning and data validation
-python scripts/02_data_cleaning_validation.py --file_path=data/raw/data.csv
+python scripts/02_data_cleaning_validation.py --file_path="data/raw/data.csv"
 
 # Perform exploratory data analysis and save figures
 python scripts/03_eda.py --data_path="data/processed/train_data.csv" --figure_path="results/figures"
