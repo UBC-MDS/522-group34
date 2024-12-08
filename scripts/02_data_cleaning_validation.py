@@ -40,7 +40,7 @@ def check_csv(file_path):
 
     # Try to read the file using pandas (this will raise an error if it's not a CSV file)
     try:
-        pd.read_csv("file_path")
+        pd.read_csv(file_path)
         return True
     except Exception:
         return False
