@@ -1,9 +1,6 @@
 services:
   jupyter-notebook:
-    build: 
-      context: .  # Use the current directory as the build context
-      dockerfile: Dockerfile  # Specify your Dockerfile
-    image: testing_cmds  # Optional: give your image a name
+    image: siddart/mds:latest
     ports:
       - "8888:8888"
     volumes:
