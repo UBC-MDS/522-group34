@@ -1,6 +1,6 @@
 services:
   jupyter-notebook:
-    image: siddart/mds:latest
+    image: siddart/mds:eeffa2f
     ports:
       - "8888:8888"
     volumes:
