@@ -44,10 +44,10 @@ python scripts/01_download_data.py \
 python scripts/02_data_cleaning_validation.py --file_path=data/raw/data.csv
 
 # Perform exploratory data analysis and save figures
-python scripts/03_eda.py --data_path="data/processed/train_data.csv" --figure_path="figures"
+python scripts/03_eda.py --data_path="data/processed/train_data.csv" --figure_path="results/figures"
 
 # Run the knn model and export the best one
-python scripts/04_model_classifier.py --data_path_train="data/processed/train_data.csv" --data_path_test="data/processed/test_data.csv" --pipeline_to="models"
+python scripts/04_model_classifier.py --data_path_train="data/processed/train_data.csv" --data_path_test="data/processed/test_data.csv" --pipeline_to="results/models"
 ```
 **Clean Up**
 
@@ -56,6 +56,24 @@ python scripts/04_model_classifier.py --data_path_train="data/processed/train_da
 2. Use the following command to remove the container. 
 
     `docker compose rm`
+
+## Adding a new dependency
+
+1. Add the dependency to the `environment.yml` file on a new branch.
+
+2. Run `conda-lock -k explicit --file environment.yml -p linux-64` to update the `conda-linux-64.lock` file.
+
+2. Re-build the Docker image locally to ensure it builds and runs properly.
+
+3. Push the changes to GitHub. A new Docker
+   image will be built and pushed to Docker Hub automatically.
+   It will be tagged with the SHA for the commit that changed the file.
+
+4. Update the `docker-compose.yml` file on your branch to use the new
+   container image (make sure to update the tag specifically).
+
+5. Send a pull request to merge the changes into the `main` branch. 
+
 
 ## License
 The Academic Success Prediction report contained herein are licensed under the **Creative Commons Attribution 2.5 Canada License** ([CC BY 2.5 CA](https://creativecommons.org/licenses/by/2.5/ca/)). See the [license file](./LICENSE.md) for more information. . If re-using/re-mixing please provide attribution and link to this webpage. The software code contained within this repository is licensed under the MIT license. See the [license file](./LICENSE.md) for more information.
