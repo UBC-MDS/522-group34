@@ -45,6 +45,9 @@ python scripts/02_data_cleaning_validation.py --file_path=data/raw/data.csv
 
 # Perform exploratory data analysis and save figures
 python scripts/03_eda.py --data_path="data/processed/train_data.csv" --figure_path="figures"
+
+# Run the knn model and export the best one
+python scripts/04_model_classifier.py --data_path_train="data/processed/train_data.csv" --data_path_test="data/processed/test_data.csv" --pipeline_to="models"
 ```
 **Clean Up**
 
