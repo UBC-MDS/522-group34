@@ -7,6 +7,7 @@ import os
 import altair as alt
 import numpy as np
 import pandas as pd
+from eda_plots import plot_categorical_features
 
 # main function
 
@@ -51,22 +52,8 @@ def main(data_path, figure_path):
     )
     numerical_figures.save(f"{figure_path}/eda_numerical.png")
 
-    # Plot categorical and boolean features
-    categorical_figures = alt.Chart(df).mark_bar().encode(
-        x = alt.X(alt.repeat()).type('quantitative'),
-        y = 'count():Q',
-        column = alt.Column('Target:N', title = None),
-        color = alt.Color('Target:N', legend = None)
-    ).properties(
-        width = 120,
-        height = 80
-    ).resolve_scale(
-        y = 'independent'
-    ).repeat(
-        categorical_features,
-        columns = 1
-    )
-    categorical_figures.save(f"{figure_path}/eda_categorical.png")
+    # Call the function for categorical plot
+    plot_categorical_features(df, categorical_features, figure_path)
 
 if __name__ == "__main__":
     main()
