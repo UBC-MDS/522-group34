@@ -5,7 +5,7 @@ import os
 import sys
 import tempfile
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from scripts.eda_plots import plot_categorical_features, plot_numerical_features
+from src.eda_plots import plot_categorical_features, plot_numerical_features
 
 
 # Test data

@@ -4,11 +4,13 @@
 
 import click
 import os
+import sys
 import altair as alt
 import numpy as np
 import pandas as pd
-from eda_plots import plot_categorical_features
-from eda_plots import plot_numerical_features
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from src.eda_plots import plot_categorical_features
+from src.eda_plots import plot_numerical_features
 
 # main function
 
