@@ -9,13 +9,13 @@ from src.read_zip import read_zip
 # Test files setup
 
 # setup empty directory for data files to be downloaded to
-if not os.path.exists('tests/test_zip_data1'):
-    os.makedirs('tests/test_zip_data1')
+if not os.path.exists('test/test_zip_data1'):
+    os.makedirs('test/test_zip_data1')
 
 # setup directory that contains a file for data files to be downloaded to
-if not os.path.exists('tests/test_zip_data2'):
-    os.makedirs('tests/test_zip_data2')
-with open('tests/test_zip_data2/test4.txt', 'w') as file:
+if not os.path.exists('test/test_zip_data2'):
+    os.makedirs('test/test_zip_data2')
+with open('test/test_zip_data2/test4.txt', 'w') as file:
     pass  # The 'pass' statement does nothing, creating an empty file
 
 test_files_txt_csv = ['test1.txt', 'test2.csv']
@@ -23,13 +23,13 @@ test_files_subdir = ['test1.txt', 'test2.csv', 'subdir/test3.txt']
 test_files_2txt_csv = ['test1.txt', 'test2.csv', 'test4.txt']
 
 # URL for Case 1 (zip file containing 'test1.txt' and 'test2.csv')
-url_txt_csv_zip = 'https://github.com/UBC-MDS/academic-success-prediction/raw/main/test/files_txt_csv.zip'
+url_txt_csv_zip = 'https://github.com/UBC-MDS/academic-success-prediction/raw/main/test/testdata/files_txt_csv.zip'
 
 # URL for Case 2 ('test1.txt', test2.csv and 'subdir/test2.txt')
-url_txt_subdir_zip = 'https://github.com/UBC-MDS/academic-success-prediction/raw/main/test/files_txt_subdir.zip'
+url_txt_subdir_zip = 'https://github.com/UBC-MDS/academic-success-prediction/raw/main/test/testdata/files_txt_subdir.zip'
 
 # URL for Case 3 (empty zip file)
-url_empty_zip = 'https://github.com/UBC-MDS/academic-success-prediction/raw/main/test/empty.zip'
+url_empty_zip = 'https://github.com/UBC-MDS/academic-success-prediction/raw/main/test/testdata/empty.zip'
 
 # mock non-existing URL
 @pytest.fixture
