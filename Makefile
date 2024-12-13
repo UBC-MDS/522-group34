@@ -10,25 +10,25 @@
 all : report/academic-success-prediction.pdf report/academic-success-prediction.html
 
 # Download the data and extract and save as csv file
-data/raw/data.csv : scripts/01_download_data.py
-	python scripts/01_download_data.py \
+data/raw/data.csv : scripts/download_data.py
+	python scripts/download_data.py \
 		--url="https://archive.ics.uci.edu/static/public/697/predict+students+dropout+and+academic+success.zip" \
 		--write_to=data/raw
 
 # Check file type, do data cleaning and data validation
-data/processed/clean_data.csv data/processed/test_data.csv data/processed/train_data.csv : data/raw/data.csv scripts/02_data_cleaning_validation.py
-	python scripts/02_data_cleaning_validation.py \
+data/processed/clean_data.csv data/processed/test_data.csv data/processed/train_data.csv : data/raw/data.csv scripts/data_cleaning_validation.py
+	python scripts/data_cleaning_validation.py \
 		--file_path="data/raw/data.csv"
 
 # Perform exploratory data analysis and save figures
-results/figures/eda_categorical.png results/figures/eda_numerical.png : data/processed/train_data.csv scripts/03_eda.py
-	python scripts/03_eda.py \
+results/figures/eda_categorical.png results/figures/eda_numerical.png : data/processed/train_data.csv scripts/eda.py
+	python scripts/eda.py \
 		--data_path="data/processed/train_data.csv" \
 		--figure_path="results/figures"
 
 # Run the knn model and export the best one
-results/models/best_knn_pipeline.pickle : data/processed/train_data.csv data/processed/test_data.csv scripts/04_model_classifier.py
-	python scripts/04_model_classifier.py \
+results/models/best_knn_pipeline.pickle : data/processed/train_data.csv data/processed/test_data.csv scripts/model_classifier.py
+	python scripts/model_classifier.py \
 		--data_path_train="data/processed/train_data.csv" \
 		--data_path_test="data/processed/test_data.csv" \
 		--pipeline_to="results/models"
