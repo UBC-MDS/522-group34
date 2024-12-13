@@ -39,7 +39,6 @@ def main(file_path):
     validate_schema(df)
     validate_distribution(df)
     validate_correlation(df)
-    print("Data validation success.")
 
     # Split train and test data set
     train, test = train_test_split(df, train_size = 0.8, random_state = 123)
