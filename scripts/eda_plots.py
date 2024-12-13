@@ -32,3 +32,20 @@ def plot_categorical_features(df, categorical_features, figure_path):
 
     # Save the plot to the given path
     categorical_figures.save(f"{figure_path}/eda_categorical.png")
+
+def plot_numerical_features(df, numeric_features, figure_path):
+    
+    # Plot numerical features
+    numerical_figures = alt.Chart(df).mark_rect().encode(
+        x = alt.X(alt.repeat()).bin(maxbins=30),
+        y = alt.Y('Target:N', title=None),
+        color = alt.Color('count():Q').legend(orient="top")
+    ).properties(
+        width = 180
+    ).repeat(
+        numeric_features,
+        columns = 2
+    )
+    numerical_figures.save(f"{figure_path}/eda_numerical.png")
+
+
