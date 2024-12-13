@@ -4,10 +4,13 @@
 
 import click
 import os
+import sys
 import altair as alt
 import numpy as np
 import pandas as pd
-from eda_plots import plot_categorical_features
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from src.eda_plots import plot_categorical_features
+from src.eda_plots import plot_numerical_features
 
 # main function
 
@@ -39,19 +42,9 @@ def main(data_path, figure_path):
                         "Curricular units 2nd sem (grade)", "Curricular units 2nd sem (without evaluations)",
                         "Unemployment rate", "Inflation rate", "GDP"]
 
-    # Plot numerical features
-    numerical_figures = alt.Chart(df).mark_rect().encode(
-        x = alt.X(alt.repeat()).bin(maxbins=30),
-        y = alt.Y('Target:N', title=None),
-        color = alt.Color('count():Q').legend(orient="top")
-    ).properties(
-        width = 180
-    ).repeat(
-        numeric_features,
-        columns = 2
-    )
-    numerical_figures.save(f"{figure_path}/eda_numerical.png")
+    
 
+    plot_numerical_features(df, numeric_features, figure_path)
     # Call the function for categorical plot
     plot_categorical_features(df, categorical_features, figure_path)
 
