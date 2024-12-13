@@ -43,10 +43,10 @@ def mock_response():
 
 # test read_zip function can download and extract a zip file containing two files 
 def test_read_zip_txt_csv():
-    read_zip(url_txt_csv_zip, 'tests/test_zip_data1')
+    read_zip(url_txt_csv_zip, 'test/test_zip_data1')
     # List of files you expect to find in the directory
     for file in test_files_txt_csv:
-        file_path = os.path.join('tests/test_zip_data1', file)
+        file_path = os.path.join('test/test_zip_data1', file)
         assert os.path.isfile(file_path)
     # clean up unzipped files
     for file in test_files_txt_csv:
@@ -56,25 +56,25 @@ def test_read_zip_txt_csv():
 # test read_zip function can download and extract a zip file containing two files 
 # and subdirectories containing files
 def test_read_zip_subdir():
-    read_zip(url_txt_subdir_zip, 'tests/test_zip_data1')
+    read_zip(url_txt_subdir_zip, 'test/test_zip_data1')
     # List of files you expect to find in the directory
     for file in test_files_subdir:
-        file_path = os.path.join('tests/test_zip_data1', file)
+        file_path = os.path.join('test/test_zip_data1', file)
         assert os.path.isfile(file_path)
     # clean up unzipped files
     for file in test_files_subdir:
         if os.path.exists(file):
             os.remove(file)
-    if os.path.exists('testss/test_zip_data1/subdir'):
-        shutil.rmtree('testss/test_zip_data1/subdir')
+    if os.path.exists('test/test_zip_data1/subdir'):
+        shutil.rmtree('test/test_zip_data1/subdir')
 
 # test read_zip function can download and extract a zip file containing two files 
 # into a directory that already contains a file
 def test_read_zip_2txt_csv():
-    read_zip(url_txt_csv_zip, 'tests/test_zip_data2')
+    read_zip(url_txt_csv_zip, 'test/test_zip_data2')
     # List of files you expect to find in the directory
     for file in test_files_2txt_csv:
-        file_path = os.path.join('tests/test_zip_data2', file)
+        file_path = os.path.join('test/test_zip_data2', file)
         assert os.path.isfile(file_path)
     # clean up unzipped files
     for file in test_files_txt_csv:
@@ -85,20 +85,20 @@ def test_read_zip_2txt_csv():
 # at the input URL is empty
 def test_read_zip_empty_zip():
     with pytest.raises(ValueError, match='The ZIP file is empty.'):
-        read_zip(url_empty_zip, 'tests/test_zip_data1')
+        read_zip(url_empty_zip, 'test/test_zip_data1')
 
 # test read_zip function throws an error if the input URL is invalid 
 def test_read_zip_error_on_invalid_url(mock_response):
     with pytest.raises(ValueError, match='The URL provided does not exist.'):
-        read_zip('https://example.com', 'tests/test_zip_data1')
+        read_zip('https://example.com', 'test/test_zip_data1')
 
 # test read_zip function throws an error if the URL is not a zip file
 def test_read_zip_error_on_nonzip_url():
     with pytest.raises(ValueError, match='The URL provided does not point to a zip file.'):
-        read_zip('https://github.com/', 'tests/test_zip_data1')
+        read_zip('https://github.com/', 'test/test_zip_data1')
 
 # test read_zip function throws an error 
 # if the  directory path provided does not exist
 def test_read_zip_error_on_missing_dir():
     with pytest.raises(ValueError, match='The directory provided does not exist.'):
-        read_zip(url_txt_csv_zip, 'tests/test_zip_data3')
+        read_zip(url_txt_csv_zip, 'test/test_zip_data3')
