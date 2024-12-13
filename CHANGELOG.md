@@ -1,0 +1,1 @@
+- Fix the name of the python scripts to follow the best naming conventions: https://github.com/UBC-MDS/academic-success-prediction/pull/56
