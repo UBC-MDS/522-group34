@@ -26,7 +26,7 @@ def validate_correlation(df, corr_threshold = 0.95):
     
     # Encode the target column with numeric values so correlation test can be done
     mapping = {"Enrolled": 0, "Dropout": 1, "Graduate": 2}
-    validate_df = df
+    validate_df = df.copy()
     validate_df["Target"] = validate_df["Target"].map(mapping)
 
     # Calculate pairwise correlations for all feature/feature and feature/target pairs
