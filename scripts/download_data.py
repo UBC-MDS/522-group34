@@ -16,7 +16,8 @@ def main(url, write_to):
     """Downloads data zip data from the web to a local filepath and extracts it."""
     try:
         read_zip(url, write_to)
-    except:
+    except Exception as e:
+        print("Failed to read zip: ", e)
         os.makedirs(write_to)
         read_zip(url, write_to)
 

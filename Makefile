@@ -12,7 +12,7 @@ all : report/academic-success-prediction.pdf report/academic-success-prediction.
 # Download the data and extract and save as csv file
 data/raw/data.csv : scripts/download_data.py
 	python scripts/download_data.py \
-		--url="https://archive.ics.uci.edu/static/public/697/predict+students+dropout+and+academic+success.zip" \
+		--url="http://archive.ics.uci.edu/static/public/697/predict+students+dropout+and+academic+success.zip" \
 		--write_to=data/raw
 
 # Check file type, do data cleaning and data validation
