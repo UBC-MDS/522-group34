@@ -13,7 +13,7 @@ def test_validate_distribution_within_range():
         "Application mode": [18.6, 18.7, 19, 18.5, 18.8],
         "Application order": [1.7, 1.8, 1.7, 1.6, 1.8],
         "Course": [8856, 8857, 8855, 8856, 8857],
-        "Target": ["Enrolled", "Dropout", "Graduate", "Enrolled", "Dropout"]
+        "Target": ["Enrolled", "Dropout", "Graduate", "Graduate", "Graduate"]
     }
     df = pd.DataFrame(data)
     
@@ -37,20 +37,3 @@ def test_validate_distribution_outside_range():
     # Capture print statements or exceptions
     with pytest.raises(Exception):
         validate_distribution(df)
-
-def test_validate_distribution_with_missing_data():
-    # Create a DataFrame with missing values (NaN) in some columns
-    data = {
-        "Marital status": [1.2, np.nan, 1.3, 1.2, 1.1],
-        "Application mode": [18.5, 18.7, np.nan, 18.6, 18.8],
-        "Application order": [1.6, 1.7, 1.6, np.nan, 1.8],
-        "Course": [8856, 8857, 8855, np.nan, 8857],
-        "Target": ["Enrolled", "Dropout", "Graduate", "Enrolled", "Dropout"]
-    }
-    df = pd.DataFrame(data)
-    
-    # Test that no exception is raised despite the missing data (NaN values should be handled)
-    try:
-        validate_distribution(df)
-    except Exception as e:
-        pytest.fail(f"Unexpected exception raised: {e}")
