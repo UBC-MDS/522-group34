@@ -42,6 +42,16 @@ make all
 
     `docker compose rm`
 
+**Folder Structure**
+
+- `data`: Contains both raw and processed data
+- `img`: Contains image used in the README
+- `report`: Contains `.html` and `.pdf` versions of the final report, as well as the `.qmd` file used the generate the report. 
+- `results`: Contains figures and models exported by the analysis scripts in `scripts`
+- `scripts`: Contains Python scripts used to perform data processing, analysis and model training
+- `src`: Contains source code for functions used by analysis scripts in `scripts`
+- `test`: Contains unit tests for functions in `src`
+
 ## Adding a new dependency
 
 1. Add the dependency to the `environment.yml` file on a new branch.
