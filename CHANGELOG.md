@@ -62,9 +62,9 @@
 
 -   **Feedback:** Validate Target Variable Distribution function needs more rigor
 
--   **Resolution:**
+-   **Resolution:** Added `validate_distribution.py` to check that the Target classes are within an expected proportion range and throws an exception if it's 2 standard deviations away from expected. 
 
--   **By:**
+-   **By:** Jenson Chang
 
 -   **Evidence:**
 

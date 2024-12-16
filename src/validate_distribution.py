@@ -99,15 +99,36 @@ def validate_distribution(df):
         "GDP": 2.269935441
     }, index=[0])
 
+    ref_prop = {
+        'prop': {'Graduate': 0.5, 'Enrolled': 0.18, 'Dropout': 0.32},
+        'std': 0.10
+    }
+
     # Check distribution for all numeric columns by checking if the mean is 2 standard deviation away from the reference mean
-    for column in df.columns[:-1]:
-        col = df[column].dropna()
+    for column in df.columns:
 
-        # Calculate mean and standard deviation for data
-        expected_mean = ref_mean.loc[0, column]
-        expected_std = ref_std.loc[0, column]
-        mean = col.mean()
+        if column == 'Target':
+            # Calculate the proportions of the categorical column
+            proportions = df[column].value_counts(normalize=True, dropna=True).to_dict()
 
-        # Check if mean is 2*std away from reference mean
-        if abs(mean - expected_mean) > 2*expected_std:
-            raise Exception(f"Column {col} mean {mean} is 2 standard deviation away from reference mean {expected_mean}.")
+            # Check proportions
+            for cat in ref_prop['prop']:
+                expected_prop = ref_prop['prop'][cat]
+                prop = proportions.get(cat, 0)
+                std = ref_prop['std']
+                
+                if abs(prop - expected_prop) > 2*std:
+                    raise Exception(f"Proportion for category {cat} in {column} is more than 2 standard deviation away from reference proportion:"
+                                    f"Expected={expected_prop}, Calculated={prop}")
+
+        else:
+            col = df[column].dropna()
+
+            # Calculate mean and standard deviation for data
+            expected_mean = ref_mean.loc[0, column]
+            expected_std = ref_std.loc[0, column]
+            mean = col.mean()
+
+            # Check if mean is 2*std away from reference mean
+            if abs(mean - expected_mean) > 2*expected_std:
+                raise Exception(f"Column {col} mean {mean} is 2 standard deviation away from reference mean {expected_mean}.")
