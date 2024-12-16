@@ -66,7 +66,7 @@
 
 -   **By:** Jenson Chang
 
--   **Evidence:**
+-   **Evidence:** [PR #58](https://github.com/UBC-MDS/academic-success-prediction/pull/58/files), `validate_distribution.py`, Line 110
 
 ## Peer Review Feedback
 
