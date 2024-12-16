@@ -58,7 +58,7 @@
 
 -   **Evidence:** [PR #58](https://github.com/UBC-MDS/academic-success-prediction/pull/58/files)
 
--   —
+    —
 
 -   **Feedback:** Validate Target Variable Distribution function needs more rigor
 
@@ -78,7 +78,7 @@
 
 -   **Evidence:** [PR #56](https://github.com/UBC-MDS/academic-success-prediction/pull/56)
 
--   —
+    —
 
 -   **Feedback:** [Abdul-Rahmann's feedback](https://github.com/UBC-MDS/data-analysis-review-2024/issues/11#issuecomment-2530167190): Some script of giant main functions that could be better broken up.
 
@@ -94,7 +94,7 @@
 
 -   **Evidence:** [PR #57](https://github.com/UBC-MDS/academic-success-prediction/pull/57/files), `scripts/model_classifier.py`, Line 18
 
--   —
+    —
 
 -   **Feedback:** [tianjiao00's feedback](https://github.com/UBC-MDS/data-analysis-review-2024/issues/11#issuecomment-2534180728): File structure and naming could use more clarity
 
