@@ -88,9 +88,16 @@
 
 -   **Evidence:** [PR #51](https://github.com/UBC-MDS/academic-success-prediction/pull/51/files), `scripts/02_data_cleaning_validation.py`, Line 38
 
+-   **Resolution:** `scripts/model_classifier.py` now calls 6 custom functions instead of running all logic in main
+
+-   **By:** Jingyuan Wang
+
+-   **Evidence:** [PR #57](https://github.com/UBC-MDS/academic-success-prediction/pull/57/files), `scripts/model_classifier.py`, Line 18
+
 -   —
 
 -   **Feedback:** [tianjiao00's feedback](https://github.com/UBC-MDS/data-analysis-review-2024/issues/11#issuecomment-2534180728): File structure and naming could use more clarity
+
 
 -   **Resolution:**
 
