@@ -52,11 +52,11 @@
 
 -   **Feedback:** `docker-compose.yaml` pulls from latest instead of a specific tag
 
--   **Resolution:**
+-   **Resolution:** Manually updating `docker-compose.yaml` with a specific tag whenver a new image is generated
 
--   **By:**
+-   **By:** Jenson Chang
 
--   **Evidence:**
+-   **Evidence:** [PR #58](https://github.com/UBC-MDS/academic-success-prediction/pull/58/files)
 
 -   —
 
@@ -99,8 +99,8 @@
 -   **Feedback:** [tianjiao00's feedback](https://github.com/UBC-MDS/data-analysis-review-2024/issues/11#issuecomment-2534180728): File structure and naming could use more clarity
 
 
--   **Resolution:**
+-   **Resolution:** Added a section to README to explain the folder structure
 
--   **By:**
+-   **By:** Jenson Chang
 
--   **Evidence:**
+-   **Evidence:** [Commit b7a60f3](https://github.com/UBC-MDS/academic-success-prediction/commit/b7a60f3fc8af32e69fc6bf5a217455bf097c45da)
